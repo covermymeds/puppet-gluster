@@ -163,7 +163,7 @@ define gluster::volume (
       if $ensure == 'present' {
         # our fact lists bricks comma-separated, but we need an array
         $vol_bricks = split( $facts["gluster_volume_${title}_bricks"], ',')
-        if $bricks != $vol_bricks {
+        if $bricks.sort != $vol_bricks.sort {
           # this resource's list of bricks does not match the existing
           # volume's list of bricks
           $new_bricks = difference($bricks, $vol_bricks)
