@@ -8,6 +8,7 @@ gluster_peers = {}
 gluster_volumes = {}
 peer_count = 0
 peer_list = ''
+peer_list_ar = []
 volume_options = {}
 volume_ports = {}
 
@@ -50,9 +51,14 @@ if binary
     gluster_peers[peer]['status'] = peer_xml.elements['stateStr'].text.to_s
   end
 
+  # Collecting all hostnames of peers
+  REXML::XPath.match(peer_status_xml, '/cliOutput/peerStatus/peer/hostnames/hostname').each do |hn|
+    peer_list_ar.append(hn.to_a)
+  end
+
   # Extract and format the data needed for the legacy peer facts.
   peer_count = gluster_peers.size
-  peer_list = gluster_peers.keys.join(',')
+  peer_list = peer_list_ar.join(',')
 
   # Get our volume information from gluster volume info
   volume_info_xml = REXML::Document.new(Facter::Util::Resolution.exec("#{binary} volume info --xml"))
