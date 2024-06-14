@@ -12,8 +12,8 @@ Again, assuming two servers each with one brick:
         client  => true,
         repo    => true,
         pool    => 'production',
-        version => '3.5.2',
-        volumes                => {
+        version => '7.9',
+        volumes => {
           'g0' => {
             replica => 2,
             bricks  => [ 'srv1.local:/export/brick1/brick',

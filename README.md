@@ -58,8 +58,8 @@ gluster::repo => false
 For Debian, the latest packages of the latest release will be installed by default. Otherwise, specify a version:
 
 ```puppet
-class { gluster::repo:
-  version => '3.5.2',
+class { ::gluster::repo:
+  version => '7.9',
 }
 ```
 
@@ -72,15 +72,14 @@ class { gluster::repo:
 }
 ```
 
-
-For systems using YUM, the latest package from the 3.8 release branch will be installed. You can specify a specific version and release:
+For systems using YUM, the latest package from the 7 release branch will be installed. You can specify a specific version and release:
 
 ```puppet
-class { gluster::repo:
-  release => '3.7',
+class { ::gluster::repo:
+  release => '7',
 }
-class { gluster:
-  version => '3.7.12',
+class { ::gluster:
+  version => '7.9',
 }
 ```
 
@@ -103,7 +102,7 @@ Currently, RHEL 6, RHEL 7, Debian 8, Raspbian and Ubuntu provide native Gluster 
       server  => true,
       client  => true,
       repo    => true,
-      version => 3.5.1-1.el6,
+      version => 7.9-1.el7,
     }
 
 Note that on Red Hat (and derivative) systems, the `version` parameter should match the version number used by yum for the RPM package.
@@ -115,7 +114,7 @@ This class installs **only** the Gluster client package(s). If you need to insta
 
     class { gluster::client:
       repo    => true,
-      version => '3.5.2',
+      version => '7.9',
     }
 
 Use of `gluster::client` is not supported with either `gluster::install` or `gluster::init`.
@@ -142,7 +141,7 @@ If a `volumes` parameter is passed, the defined Gluster volume(s) can be created
       repo    => true,
       client  => false,
       pool    => 'production',
-      version => '3.5',
+      version => '7.9',
       volumes => {
         'data1' => {
           replica => 2,

@@ -14,7 +14,7 @@ To create a simple two-node replicated Gluster volume, you could use the followi
         client                 => true,
         repo                   => true,
         use_exported_resources => false,
-        version                => '3.5.2',
+        version                => '7.9',
         volumes                => {
           'g0' => {
             replica => 2,

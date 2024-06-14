@@ -14,7 +14,7 @@ To create a simple two-node replicated Gluster volume, you could use the followi
         server  => true,
         client  => true,
         repo    => true,
-        version => '3.5.2',
+        version => '7.9',
       }
 
       # make sure the service is started

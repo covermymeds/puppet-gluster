@@ -6,7 +6,7 @@ Included in this module is a gluster::client class. This is a helper class that 
     node /app[1-3].local/ {
       class { gluster::client:
         repo    => true,
-        version => '3.6.2',
+        version => '7.9',
       }
     }
 

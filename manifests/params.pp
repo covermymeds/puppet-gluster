@@ -7,7 +7,7 @@ class gluster::params {
   # parameters dealing with installation
   $install_server = true
   $install_client = true
-  $release        = '7.3'
+  $release        = '7.9'
   $version        = 'LATEST'
 
   # we explicitly do NOT set a priority here. The user must define
