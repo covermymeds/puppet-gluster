@@ -4,6 +4,10 @@
 #    whether volume should be created ('present') or removed ('absent')
 # @param stripe
 #    the stripe count to use for a striped volume
+# @param disperse
+#    the brick count to use for a disperse volume
+# @param redundancy
+#    the failure tolerance to use for a disperse volume
 # @param replica
 #    the replica count to use for a replica volume
 # @param arbiter
@@ -53,6 +57,8 @@ define gluster::volume (
   Boolean $remove_options                     = false,
   Optional[Array] $options                    = undef,
   Optional[Integer] $stripe                   = undef,
+  Optional[Integer] $disperse                 = undef,
+  Optional[Integer] $redundancy               = undef,
   Optional[Integer] $replica                  = undef,
   Optional[Integer] $arbiter                  = undef,
 ) {
@@ -66,6 +72,18 @@ define gluster::volume (
     $_stripe = "stripe ${stripe}"
   } else {
     $_stripe = ''
+  }
+
+  $_disperse = if $disperse {
+    "disperse ${disperse}"
+  } else {
+    ''
+  }
+
+  $_redundancy = if $redundancy {
+    "redundancy ${redundancy}"
+  } else {
+    ''
   }
 
   $_replica = if $replica {
@@ -92,6 +110,8 @@ define gluster::volume (
 
   $cmd_args = [
     $_stripe,
+    $_disperse,
+    $_redundancy,
     $_replica,
     $_arbiter,
     $_transport,
