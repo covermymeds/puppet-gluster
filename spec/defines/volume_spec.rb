@@ -100,6 +100,29 @@ describe 'gluster::volume', type: :define do
     end
   end
 
+  describe 'with existent volume' do
+    let(:title)  { 'volume1' }
+    let(:facts) do
+      {
+        gluster_binary: '/usr/sbin/gluster',
+        gluster_peer_list: 'srv1.local,srv2.local',
+        gluster_volume_list: 'volume1',
+        gluster_volume_volume1_bricks: 'srv1.local:/export/volume1/brick,srv2.local:/export/volume1/brick',
+      }
+    end
+    let(:params) do
+      {
+        replica: 2,
+        bricks: [
+          'srv1.local:/export/volume1/brick',
+          'srv2.local:/export/volume1/brick',
+        ],
+      }
+    end
+
+    it { is_expected.to compile.with_all_deps }
+  end
+
   describe 'single node' do
     let(:facts) do
       {
