@@ -33,15 +33,50 @@ class gluster::repo::yum (
     }
   }
 
+  case $facts['os']['name'] {
+    'RedHat': {
+      if $facts['os']['release']['major'] == '8' {
+        exec { 'Enabling Codeready-Builder repo':
+          command => 'dnf config-manager --set-enabled codeready-builder-for-rhel-8-x86_64-rpms',
+          path    => ['/usr/bin', '/usr/sbin',],
+          unless  => 'rpm -qa | grep -c python3-pyxattr',
+        }
+      }
+    }
+
+    'Rocky', 'CentOS', 'AlmaLinux': {
+      if $facts['os']['release']['major'] == '8' {
+        exec { 'Enabling PowerTools repo':
+          command => 'dnf config-manager --set-enabled powertools',
+          path    => ['/usr/bin', '/usr/sbin',],
+          unless  => 'rpm -qa | grep -c python3-pyxattr',
+        }
+      }
+    }
+  }
+
+  case $facts['os']['family'] {
+    'RedHat': {
+        $sig_mirror = $facts['os']['release']['major'] ? {
+        '8' => 'centos.org/centos/8-stream',
+        '9' => 'stream.centos.org/SIGs/9-stream',
+        default => "centos.org/centos/${facts['os']['release']['major']}"
+        }
+      }
+    default: {
+        $sig_mirror = "centos.org/centos/${facts['os']['release']['major']}"
+      }
+  }
+
   $_release = if versioncmp($release, '4.1') <= 0 {
     $release
   } else {
-    $release[0]
+    $release.scanf('%d')[0]
   }
 
   yumrepo { "glusterfs-${facts['os']['architecture']}":
     enabled  => 1,
-    baseurl  => "http://mirror.centos.org/centos/${facts['os']['release']['major']}/storage/${facts['os']['architecture']}/gluster-${_release}/",
+    baseurl  => "http://mirror.${sig_mirror}/storage/${facts['os']['architecture']}/gluster-${_release}/",
     descr    => "CentOS-${facts['os']['release']['major']} - Gluster ${_release}",
     gpgcheck => 1,
     gpgkey   => $repo_key_source,

@@ -24,11 +24,11 @@ class gluster::params {
 
       $server_package = $facts['os']['release']['major'] ? {
         # RHEL 6 and 7 provide Gluster packages natively
-        /(6|7)/ => 'glusterfs-server',
+        /(6|7|8|9)/ => 'glusterfs-server',
         default => false
       }
       $client_package = $facts['os']['release']['major'] ? {
-        /(6|7)/ => 'glusterfs-fuse',
+        /(6|7|8|9)/ => 'glusterfs-fuse',
         default => false,
       }
 
